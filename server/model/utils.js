@@ -4,16 +4,13 @@ const axios = require('axios')
 const API_KEY = "c0b3f3dd6c5e8d9d1062989696f6837d"
 
 class CitysController {
-
     deleteCity(cityName) {
         return City.deleteMany({name:cityName}).then((deleted) => {
             return deleted
         })
     }
-
     addCity(city) {
         const CityDB = new City(city)
-        
         return CityDB.save()
             .then((city) => {
                 return { message:"Saved successfully"  }
@@ -22,8 +19,6 @@ class CitysController {
                 console.log("Couldn't save")
                 return { message:"Failed to save" }
             })
-
-
     }
     getAllCities() {
         return City.find({}).sort().then((citys) => {
@@ -38,8 +33,6 @@ class CitysController {
             return err.response.data
         })
     }
-    
-
 }
 const Citys = new CitysController()
 

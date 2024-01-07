@@ -31,7 +31,8 @@ router.delete('/cities/:cityName/', function (req, res) {
     
 })
 router.post('/cities/', function (req, res) {
-    const city = req.body;
+    const city = {...req.body};
+    console.log(city)
     CitysController.addCity(city).then((result)=>{
             res.status(200).send({result})
     })

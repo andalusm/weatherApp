@@ -4,26 +4,29 @@ class WeatherManager{
         this.getCitiesUrl = '/cities/'
     }
     async getCities(){
-        const cities = await $.get(this.getCitiesUrl)
-        return cities
+        const cities = (await $.get(this.getCitiesUrl)).cities
+        console.log(cities)
+        cities.forEach(city => {
+            city.saved = true;   
+        });
+        this.cities = cities
     }
     async getCityData(cityName){
         const city = await $.get(this.getCitiesUrl+cityName)
-        if(city.name){
-            this.cities.push(city)
+        if(city){
+            city.city.saved = false
+            this.cities.push(city.city)
         }
-        return city
     }
     async saveCity(city){
         const result = await $.post(this.getCitiesUrl, city)
         return result
     }
-    async daleteCity(cityName){
+    async deleteCity(cityName){
         const result = await $.ajax({
-            url: this.getCitiesUrl(),
+            url: this.getCitiesUrl+cityName,
             type: 'DELETE'
         });
         return result
     }
-
 }

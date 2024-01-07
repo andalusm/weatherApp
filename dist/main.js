@@ -1,83 +1,35 @@
+const renderer = new Renderer()
+const model = new WeatherManager()
 
 function renderAll() {
-    const expenses = $.get("/expenses")
-    const groups = categories.map(group => $.get("/expenses/" + group.toLowerCase() + "?total=true"))
-    groups.push(expenses)
-    Promise.all(groups).then((results) => {
-        rendererHelper.renderResult(results)      
-    })
+    renderer.renderWeather(model.cities)
 }
-
-function filterDates() {
-    const d1 = $("#start-date").val();
-    const d2 = $("#end-date").val();
-    let url = "/expenses"
-    let totalQuery = "?total=true"
-    if (d1 != "") {
-        url += "?d1=" + d1
-        totalQuery += "&d1=" + d1
-        if (d2 != "") {
-            url += "&d2=" + d2
-            totalQuery += "&d2=" + d2
-        }
+async function getCity() {
+    const cityName = $("#Search").val()
+    const i = model.cities.findIndex((e) => e.name === cityName)
+    if (i === -1) {
+        console.log(cityName)
+        await model.getCityData(cityName)
+        console.log(model.cities)
+        renderAll()
     }
-    const expenses = $.get(url)
-    const groups = categories.map(group => $.get("/expenses/" + group.toLowerCase() + totalQuery))
-    groups.push(expenses)
-    Promise.all(groups).then((results) => {
-        rendererHelper.renderResult(results)
-    })
-
-}
-function filterGroup() {
-    const group = $("#group-filter").find(":selected").text().toLowerCase()
-    let url = "/expenses/" + group
-    let totalQuery = "?total=true"
-    const expenses = $.get(url)
-    const groups = $.get("/expenses/" + group + totalQuery)
-    Promise.all([groups, expenses]).then((results) => {
-        rendererHelper.renderGroup(results, group)
-        
-
-    })
-
-
 }
 
-
-
-function addExpense() {
-    const date = $("#date").val();
-    const amount = $("#amount").val();
-    const item = $("#item").val();
-    const group = $("#group").find(":selected").text()
-    let expense
-    if (date === '') {
-        expense = { amount, item, group }
+async function addOrDeleteCity(cityName) {
+    const city = model.cities.find((e) => e.name === cityName)
+    if (city.saved) {
+        model.deleteCity(cityName)
     }
     else {
-        expense = { date, amount, item, group }
+        model.saveCity(city)
     }
-    const modalTitle = $(".modal-title")
-    const modalBody = $(".modal-body")
-    const modalFooter = $(".modal-footer")
-    $.post("/expense", expense).then((result) => {
-        modalTitle.text("Success")
-        modalBody.empty()
-        modalBody.append($(`<p>${result.result}</p>`))
-        modalFooter.empty()
-        modalFooter.append(closeButton)
-    })
-        .catch((err) => {
-            modalTitle.text("Error")
-            modalBody.empty()
-            modalBody.append($(`<p>This is an error, nothing was added!</p>`))
-            modalFooter.empty()
-            modalFooter.append(closeButton)
-        })
+    city.saved = !city.saved
+    renderAll()
 }
-renderAll()
 
+async function generate(){
+    await model.getCities()
+    renderAll();
+}
 
-
-
+generate()

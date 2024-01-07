@@ -16,19 +16,62 @@
     <script src="./bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./jquery/dist/jquery.js"></script>
     <script src="./handlebars/dist/handlebars.js"></script>
-    <script src="./chart.js/dist/chart.umd.js"></script>
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="logo.png" />
-    <title>My Expenses</title>
+    <title>Weather App</title>
   </head>
 
   <body>
-    
+    <section class="vh-100">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-md-8 col-lg-6 col-xl-4">
+            <h3 class="mb-4 pb-2 fw-normal">Check the weather forecast</h3>
 
-    <img href=" https://openweathermap.org/img/wn/{{icon}}.png">
+            <div class="input-group rounded mb-3">
+              <input
+                id="Search"
+                type="search"
+                class="form-control rounded"
+                placeholder="City"
+                aria-label="Search"
+                aria-describedby="search-addon"
+              />
+              <a href="#!" onclick="getCity()" type="button">
+                <span class="input-group-text border-0 fw-bold"> Check! </span>
+              </a>
+            </div>
 
+            <div id="weather-container"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script id="weather-template" type="text/x-handlebars-template">
+      {{#each this}}
+        <div class="card shadow-0 border">
+          <div class="card-body p-4">
+            
+            <h4 class="mb-1 sfw-normal" class="city-name"><button class="db-btn {{saved}}" role="button" onclick="addOrDeleteCity('{{name}}')">{{#if saved}}-{{else}}+{{/if}}</button> {{name}}</h4>
+            <p class="mb-2">Current temperature:
+              <strong>{{temperature}}°C</strong></p>
+
+            <div class="d-flex flex-row align-items-center">
+              <p class="mb-0 me-4">{{condition}}</p>
+              <img
+                src="https://openweathermap.org/img/wn/{{conditionPic}}.png"
+              />
+            </div>
+
+          </div>
+        </div>
+
+      {{/each}}
+    </script>
+
+    <script src="Model.js" defer></script>
     <script src="Render.js" defer></script>
-    <script src="utils.js" defer></script>
     <script src="main.js" defer></script>
   </body>
 </html>

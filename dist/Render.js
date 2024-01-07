@@ -1,10 +1,8 @@
 class Renderer {
     
     constructor(){
-        this.expensesContainer = $("#expenses-container");
-        this.expensesTemplate = $("#expenses-template");
-        this.addExpenseTemplate = $("#add-expense-template");
-        this.addExpenseContainer = $("#add-container")
+        this.weatherContainer = $("#weather-container");
+        this.weatherTemplate = $("#weather-template");
     }
     render(container, handleTemplate, attribute){
         container.empty()
@@ -13,12 +11,8 @@ class Renderer {
         const newHTML = template(attribute);
         container.append(newHTML)
     }
-
-    renderExpenses(expenses){
-        this.render(this.expensesContainer,this.expensesTemplate,expenses)
+    renderWeather(weather){
+        this.render(this.weatherContainer,this.weatherTemplate,weather)
     }
-    renderAddExpense(group){
-        this.render(this.addExpenseContainer,this.addExpenseTemplate,group)
-    }
-
+    
 }
