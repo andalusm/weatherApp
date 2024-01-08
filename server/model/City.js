@@ -7,7 +7,8 @@ const citySchema = new Schema({
     },
     condition: String,
     temperature: Number,
-    conditionPic: String
+    conditionPic: String,
+    date: Date
 })
 const City = mongoose.model('city', citySchema)
 module.exports = City

@@ -18,6 +18,9 @@
     <script src="./handlebars/dist/handlebars.js"></script>
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="logo.png" />
+    <script src="Model.js" defer></script>
+    <script src="Render.js" defer></script>
+    <script src="main.js" defer></script>
     <title>Weather App</title>
   </head>
 
@@ -53,15 +56,15 @@
         <div class="card shadow-0 border">
           <div class="card-body p-4">
             
-            <h4 class="mb-1 sfw-normal" class="city-name"><button class="db-btn {{saved}}" role="button" onclick="addOrDeleteCity('{{name}}')">{{#if saved}}-{{else}}+{{/if}}</button> {{name}}</h4>
+            <h4 class="mb-1 sfw-normal" class="city-name"><button class="db-btn {{saved}}" role="button" onclick="addOrDeleteCity('{{name}}')">{{#if saved}}<i class="fa-solid fa-minus"></i>{{else}}<i class="fa-solid fa-plus"></i>{{/if}}</button> {{name}}</h4>
             <p class="mb-2">Current temperature:
               <strong>{{temperature}}°C</strong></p>
 
             <div class="d-flex flex-row align-items-center">
               <p class="mb-0 me-4">{{condition}}</p>
-              <img
-                src="https://openweathermap.org/img/wn/{{conditionPic}}.png"
-              />
+              <img src="https://openweathermap.org/img/wn/{{conditionPic}}.png"/>
+            <p class="mb-0 me-4">{{date}}</p>
+            <button class="db-btn {{saved}}" role="button" onclick="refresh('{{name}}')"><i class="fa-solid fa-arrows-rotate"></i></button>
             </div>
 
           </div>
@@ -69,9 +72,5 @@
 
       {{/each}}
     </script>
-
-    <script src="Model.js" defer></script>
-    <script src="Render.js" defer></script>
-    <script src="main.js" defer></script>
   </body>
 </html>

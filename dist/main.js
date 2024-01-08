@@ -1,16 +1,16 @@
 const renderer = new Renderer()
 const model = new WeatherManager()
+let latitude = 0
+let longitude = 0
 
 function renderAll() {
     renderer.renderWeather(model.cities)
 }
 async function getCity() {
     const cityName = $("#Search").val()
-    const i = model.cities.findIndex((e) => e.name === cityName)
+    const i = model.cities.findIndex((e) => e.name.toLowerCase() === cityName.toLowerCase())
     if (i === -1) {
-        console.log(cityName)
         await model.getCityData(cityName)
-        console.log(model.cities)
         renderAll()
     }
 }
@@ -27,9 +27,35 @@ async function addOrDeleteCity(cityName) {
     renderAll()
 }
 
-async function generate(){
+async function generate() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        await model.getCities()
+        renderAll();
+    }
+}
+
+async function refresh(cityName) {
+    const saved = model.removeCityFromArray(cityName)
+    console.log(saved)
+    if (!saved) {
+        await model.getCityData(cityName, saved)
+    }
+    else {
+        await model.updateCity(cityName, saved)
+    }
+    renderAll();
+}
+
+async function showPosition(position) {
+    latitude = position.coords.latitude
+    longitude = position.coords.longitude
+    await model.getGeolocation(longitude, latitude)
     await model.getCities()
     renderAll();
 }
+
+
 
 generate()
