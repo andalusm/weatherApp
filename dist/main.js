@@ -38,7 +38,6 @@ async function generate() {
 
 async function refresh(cityName) {
     const saved = model.removeCityFromArray(cityName)
-    console.log(saved)
     if (!saved) {
         await model.getCityData(cityName, saved)
     }

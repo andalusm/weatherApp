@@ -4,7 +4,6 @@ class WeatherManager{
         this.getCitiesUrl = '/cities/'
     }
     async getGeolocation(longitude, latitude, saved = false){
-        console.log(longitude,latitude)
         const city = await $.get(`/cities/${longitude}/${latitude}`) 
         if(city){
             console.log(city)

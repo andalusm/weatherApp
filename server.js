@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // Mongoose setup
 const mongoose = require('mongoose')
-mongoose.connect("mongodb://127.0.0.1:27017/weatherDB", {
+mongoose.connect(process.env.MONGODB_URI||"mongodb://127.0.0.1:27017/weatherDB", {
     useNewUrlParser: true,
 }).catch((err) => console.log(err))
 
@@ -19,6 +19,6 @@ mongoose.connect("mongodb://127.0.0.1:27017/weatherDB", {
 app.use('/', api)
 
 const port = 5100
-app.listen(port, function () {
+app.listen(process.env.PORT||port, function () {
     console.log(`Running on port ${port}`)
 })
